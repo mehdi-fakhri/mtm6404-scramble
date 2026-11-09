@@ -33,3 +33,38 @@ function shuffle (src) {
 /**********************************************
  * YOUR CODE BELOW
  **********************************************/
+
+const words = ["teemo", "jinx", "lux", "ahri", "yasuo", "zed", "riven", "fiora", "katarina","akali"];
+
+
+function App() {
+  const [points, setPoints] = React.useState(0);   
+  const [strikes, setStrikes] = React.useState(0);
+  const [passes , setPasses] = React.useState(3);
+  const [guess, setGuess] = React.useState("");
+  const [wordList, setWorldlist] = React.useState(shuffle(words));
+  const [scrambled, setScrambled] = React.useState(shuffle(wordList[0]));
+
+  return (
+    <div>
+      <h1>Welcome to Scramble</h1>
+      <p>Points: {points}</p>    
+            <p>strikes: {strikes}</p>     
+
+      <p>passes: {passes}</p>
+      <p>word: {Scrambled}</p>     
+      <input
+  value={guess}                                   
+  onChange={(e) => setGuess(e.target.value)}
+  placeholder="Your guess"
+/>
+
+
+                    
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));   
+root.render(<App />);
+
