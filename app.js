@@ -43,17 +43,20 @@ function App() {
   const [guess, setGuess] = React.useState("");
   const [wordList, setWorldlist] = React.useState(shuffle(words));
   const [scrambled, setScrambled] = React.useState(shuffle(wordList[0]));
+  const [message, setMessage] = React.useState("");
+
 
 function handleSubmit(e) {
-
   if (e.key === "Enter") {
+    if (guess === wordList[0]) {
+      setMessage("Correct");
+      setPoints(points + 1);
+    } else {
+      setStrikes(strikes + 1);
+      setMessage("Wrong");
+    }
     setGuess("");
   }
-  
-
-
-
-
 }
 
 
@@ -80,6 +83,7 @@ function handleSubmit(e) {
   placeholder="Your guess"
 />
 
+<p>{message}</p>
 
                     
     </div>
