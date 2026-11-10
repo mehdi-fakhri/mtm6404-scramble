@@ -37,42 +37,22 @@ const words = ["teemo", "jinx", "lux", "ahri", "yasuo", "zed", "riven", "fiora",
 
 
 function App() {
-  const [points, setPoints] = React.useState(0);   
-  const [strikes, setStrikes] = React.useState(0);
-  const [passes , setPasses] = React.useState(3);
+  const [points, setPoints] = React.useState(Number(localStorage.getItem("points")) || 0);   
+  const [strikes, setStrikes] = React.useState(Number(localStorage.getItem("strikes")) || 0);   
+  const [passes, setPasses] = React.useState(Number(localStorage.getItem("passes") || 3));
   const [guess, setGuess] = React.useState("");
-  const [wordList, setWorldlist] = React.useState(shuffle(words));
-  const [scrambled, setScrambled] = React.useState(shuffle(wordList[0]));
-  const [message, setMessage] = React.useState("");
- const gameOver = strikes === 3 || wordList.length === 0;
+
+  const [wordList, setWorldlist] = React.useState(JSON.parse(localStorage.getItem("wordList")) || shuffle(words));
+  const [scrambled, setScrambled] = React.useState(localStorage.getItem("scrambled") || shuffle(wordList[0] || ""));
+const [message, setMessage] = React.useState("");
+
+  
+  const gameOver = strikes === 3 || wordList.length === 0;
+ 
   
 
 
-function handleSubmit(e) {
-  if (e.key === "Enter") {
-    if (guess.toLowerCase() === wordList[0].toLowerCase()) {
-      setMessage("Correct");
-      setPoints(points + 1);
-      const newList = wordList.slice(1);
-      setWorldlist(newList);
-      setScrambled(shuffle(newList[0] || ""));
-    } else {
-      setStrikes(strikes + 1);
-      setMessage("Wrong");
-    }
-    setGuess("");
-  }
-}
 
-function handlePass() {
-  if (passes > 0) {                  
-    const newList = wordList.slice(1);
-    setWorldlist(newList);
-    setScrambled(shuffle(newList[0] || ""));
-    setPasses(passes - 1);           
-    setMessage("You passed");
-  }
-}
 function playAgain() {
   const newList = shuffle(words);
   setWorldlist(newList);
@@ -82,7 +62,40 @@ function playAgain() {
   setPasses(3);    
   setMessage("");
 }
- 
+ function handleSubmit(e) {
+  if (e.key === "Enter") {
+    if (guess.toLowerCase() === wordList[0].toLowerCase()) {
+      setMessage("Correct");
+      setPoints(points + 1);
+      localStorage.setItem("points", points + 1);
+      const newList = wordList.slice(1);
+      setWorldlist(newList);
+      localStorage.setItem("wordList", JSON.stringify(newList));
+      const nextWord = shuffle(newList[0] || "");
+      setScrambled(nextWord);
+      localStorage.setItem("scrambled", nextWord);
+    } else {
+      setStrikes(strikes + 1);
+      localStorage.setItem("strikes", strikes + 1);
+      setMessage("Wrong");
+    }
+    setGuess("");
+  }
+}
+
+function handlePass() {
+  if (passes > 0) {
+    const newList = wordList.slice(1);
+    setWorldlist(newList);
+    localStorage.setItem("wordList", JSON.stringify(newList));
+    const nextWord = shuffle(newList[0] || "");
+    setScrambled(nextWord);
+    localStorage.setItem("scrambled", nextWord);
+    setPasses(passes - 1);
+    localStorage.setItem("passes", passes - 1);
+    setMessage("You passed");
+  }
+}
 
 
 
