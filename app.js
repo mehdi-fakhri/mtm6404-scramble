@@ -55,6 +55,7 @@ const [message, setMessage] = React.useState("");
 
 function playAgain() {
   const newList = shuffle(words);
+  localStorage.clear();
   setWorldlist(newList);
   setScrambled(shuffle(newList[0]));
   setPoints(0);    
